@@ -5,11 +5,24 @@ export const postTypeDefs = gql`
 		id: ID!
 		title: String!
 		content: String!
+		userID: ID!
+		comments: [Comment]
+	}
+
+	type Comment {
+		content: String!
+		userID: ID!
 	}
 	
     input PostInput {
         content: String
         title: String
+		user_id: ID
+    }
+
+	input CommentInput {
+        content: String
+		user_id: ID
     }
 
 	extend type Query {
@@ -21,5 +34,6 @@ export const postTypeDefs = gql`
 		createPost(postInput: PostInput): Post
         updatePost(id: ID!, postInput: PostInput): Post
 		deletePost(id: ID!): Post
+		addComment(postId: ID!, commentInput: CommentInput): Comment
 	}
 `;

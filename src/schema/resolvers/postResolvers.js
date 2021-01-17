@@ -1,3 +1,4 @@
+import { stripIgnoredCharacters } from "graphql";
 import { postModel } from "../../db/models/post.js";
 
 export const postResolvers = {
@@ -24,6 +25,14 @@ export const postResolvers = {
     deletePost: async (_, { id }) => {
       const post = await postModel.findByIdAndDelete(id);
       return post;
+    },
+    addComment: async (_, { postId, commentInput }) => {
+      const post = await postModel.findById(postId);
+
+      post.comments.push(commentInput);
+      await post.save();
+
+      return commentInput;
     },
   },
 };
